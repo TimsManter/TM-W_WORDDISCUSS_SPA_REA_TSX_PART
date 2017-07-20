@@ -58,7 +58,6 @@ module.exports = {
       template: "src/ejs/index.ejs"
     })
   ],
-  // Windows autism
   node: {
     fs: "empty"
   }
