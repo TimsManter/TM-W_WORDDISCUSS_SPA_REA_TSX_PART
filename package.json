@@ -23,6 +23,7 @@
     "fetch-jsonp": "^1.1.1",
     "fs": "0.0.1-security",
     "jsonp": "^0.2.1",
+    "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.0",
     "react-dnd": "^2.4.0",
