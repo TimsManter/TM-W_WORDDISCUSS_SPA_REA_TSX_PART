@@ -7,7 +7,12 @@ export interface HelloProps { compiler: string; framework: string; }
 // State is never set so we use the 'undefined' type.
 export default class Hello extends React.Component<HelloProps, {}> {
   componentDidMount() {
-
+    docx4js.load("test.docx").then(docx => {
+      let preview = document.getElementById("document-preview");
+      if (preview !== null) {
+        preview = docx.render();
+      }
+    });
   }
 
   render() {
