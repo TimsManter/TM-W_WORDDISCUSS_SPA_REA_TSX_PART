@@ -2,12 +2,10 @@ import * as React from "react";
 import * as Docx from "docx4js";
 const doc = require("base64-loader!./test.docx");
 
-export interface HelloProps { compiler: string; framework: string; }
+export interface P { }
 
-// 'HelloProps' describes the shape of props.
-// State is never set so we use the 'undefined' type.
-export default class Hello extends React.Component<HelloProps, {}> {
-  /*componentDidMount() {
+export default class Docx4JsRender extends React.Component<P> {
+  componentDidMount() {
     //console.log(doc);
     const blob: Blob = this.b64toBlob(doc, "application/zip");
     //console.log(blob);
@@ -44,8 +42,5 @@ export default class Hello extends React.Component<HelloProps, {}> {
 
   render() {
     return <div id="document-preview"></div>;
-  }*/
-  render() {
-    return <iframe src="http://docs.google.com/viewer?url=https://calibre-ebook.com/downloads/demos/demo.docx&embedded=true"></iframe>;
   }
 }

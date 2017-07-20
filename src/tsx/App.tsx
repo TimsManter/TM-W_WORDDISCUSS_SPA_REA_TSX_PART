@@ -3,9 +3,9 @@ import * as ReactDOM from "react-dom";
 
 import "./../scss/style.scss";
 
-import Hello from "./components/Hello";
+import GViewRender from "./components/GViewRender";
 
 ReactDOM.render(
-  <Hello compiler="TypeScript" framework="React" />,
+  <GViewRender/>,
   document.getElementById("app")
 );
