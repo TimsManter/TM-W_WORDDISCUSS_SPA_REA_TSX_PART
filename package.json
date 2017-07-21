@@ -20,6 +20,7 @@
     "axios": "^0.16.2",
     "base64-loader": "^1.0.0",
     "core-util-is": "^1.0.2",
+    "docx2html": "^1.1.0",
     "docx4js": "git+https://git@github.com/lalalic/docx4js.git",
     "fetch-jsonp": "^1.1.1",
     "fs": "0.0.1-security",

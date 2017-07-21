@@ -1,24 +1,15 @@
 import * as React from "react";
-import * as Docx from "docx4js";
+const docx2Html = require("docx2html");
 const doc = require("base64-loader!./test.docx");
 
 export interface P { }
 
 export default class Docx4JsRender extends React.Component<P> {
   componentDidMount() {
-    //console.log(doc);
+    let preview = document.getElementById("document-preview");
     const blob: Blob = this.b64toBlob(doc, "application/zip");
-    //console.log(blob);
     (blob as any).name = "text.docx";
-    Docx.load(blob).then(docx => {
-      let preview = document.getElementById("document-preview");
-      if (preview !== null) {
-        docx.render(function createElement(type, props, children) {
-          console.log({ type, props, children });
-        });
-        preview.innerHTML = docx.render();
-      }
-    });
+    docx2Html(blob, { container: preview }).then(html => html.toString());
   }
 
   b64toBlob(b64Data, contentType="", sliceSize=512) {
