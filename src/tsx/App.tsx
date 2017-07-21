@@ -8,6 +8,6 @@ import GViewRender from "./components/GViewRender";
 import Docx4JsRender from "./components/Docx4JsRender";
 
 ReactDOM.render(
-  <Fabric><GViewRender/></Fabric>,
+  <Fabric><Docx4JsRender/></Fabric>,
   document.getElementById("app")
 );

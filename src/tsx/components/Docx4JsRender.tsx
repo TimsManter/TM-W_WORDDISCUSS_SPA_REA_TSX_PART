@@ -13,7 +13,9 @@ export default class Docx4JsRender extends React.Component<P> {
     Docx.load(blob).then(docx => {
       let preview = document.getElementById("document-preview");
       if (preview !== null) {
-        console.log(docx.render());
+        docx.render(function createElement(type, props, children) {
+          console.log({ type, props, children });
+        });
         preview.innerHTML = docx.render();
       }
     });
