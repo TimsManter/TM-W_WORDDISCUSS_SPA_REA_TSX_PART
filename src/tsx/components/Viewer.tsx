@@ -14,7 +14,7 @@ export default class Viewer extends React.Component<P, S> {
   constructor(props: P) {
     super();
     this.state = {
-      currentRenderer: "gview"
+      currentRenderer: "mammoth"
     };
   }
 
