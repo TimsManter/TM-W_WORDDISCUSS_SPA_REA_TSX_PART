@@ -13,9 +13,8 @@ export default class Mammoth extends React.Component<P, S> {
     this.state = {
       docHtml: ""
     };
-    console.log(doc);
+    
     const docBuffer = new Buffer(doc, "base64");
-    console.log(docBuffer);
     MammothJS.convertToHtml({ arrayBuffer: docBuffer })
       .then(result => {
         this.setState({ docHtml: result.value });
