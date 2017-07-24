@@ -1,5 +1,9 @@
 import * as React from "react";
-import { DocumentCard, DocumentCardTitle } from "office-ui-fabric-react";
+import {
+  DocumentCard,
+  DocumentCardTitle,
+  DocumentCardLocation
+} from "office-ui-fabric-react";
 
 export interface P {
   commentsHtml: string;
@@ -11,11 +15,25 @@ export default class CommentList extends React.Component<P> {
     const comments = this.props.commentsHtml;
     let cards: JSX.Element[] = [];
     const commentParts =
-      comments.split(/<\/?d(?:t|d)[^<]*>/i).filter(s => s !== "");
+      comments.split(/(?:<dt |<\/dd>)/i).filter(s => s !== "");
     console.log(commentParts);
-    for (let c = 0; c < commentParts.length; c += 2) {
+    for (let c in commentParts) {
+      const title = commentParts[c]
+        .split(/id="[^>]*>|<\/dt>.*/i)
+        .filter(s => s !== "")[0];
+      const content = commentParts[c]
+        .split(/.*<p>| <a.*/i)
+        .filter(s => s !== "")[0];
+      const commentRef = commentParts[c]
+        .split(/.*href="|">↑.*/i)
+        .filter(s => s !== "")[0];
+      const anchorId = commentParts[c]
+        .split(/id="|">.*$/i)
+        .filter(s => s !== "")[0];
       cards.push(<DocumentCard key={c}>
-        <DocumentCardTitle title={commentParts[c]} />
+        <span id={anchorId} />
+        <DocumentCardLocation location={title} locationHref={commentRef} />
+        <DocumentCardTitle title={content} />
       </DocumentCard>);
     }
     return cards;
