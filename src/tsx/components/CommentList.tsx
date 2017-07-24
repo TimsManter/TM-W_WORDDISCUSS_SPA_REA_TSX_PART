@@ -10,7 +10,9 @@ export default class CommentList extends React.Component<P> {
   renderCards(): JSX.Element[] {
     const comments = this.props.commentsHtml;
     let cards: JSX.Element[] = [];
-    const commentParts = comments.split(/<\/?d(t|d)[^<]*>/ig);
+    const commentParts =
+      comments.split(/<\/?d(?:t|d)[^<]*>/i).filter(s => s !== "");
+    console.log(commentParts);
     for (let c = 0; c < commentParts.length; c += 2) {
       cards.push(<DocumentCard key={c}>
         <DocumentCardTitle title={commentParts[c]} />

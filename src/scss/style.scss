@@ -21,5 +21,6 @@ html, body, #app, .ms-Fabric {
 #mammoth-preview {
   @extend #document-preview;
   padding: 30px;
+  flex-basis: 70%;
 }
 

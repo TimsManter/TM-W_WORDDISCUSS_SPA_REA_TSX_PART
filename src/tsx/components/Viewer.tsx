@@ -31,6 +31,7 @@ export default class Viewer extends React.Component<P, S> {
       styleMap: [ "comment-reference => sup" ]
     }).then(result => {
       this.setState({
+        //docHtml: result.value
         docHtml: this.cutCommentsFromDocHtml(result.value)
       });
     }).done();
