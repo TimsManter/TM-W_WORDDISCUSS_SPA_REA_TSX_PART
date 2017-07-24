@@ -3,6 +3,12 @@ html, body, #app, .ms-Fabric {
   height: 100%;
 }
 
+#preview-wrapper {
+  @extend #app;
+  display: flex;
+  flex-direction: column;
+}
+
 #document-preview {
   height: 100%;
   width: 50%;

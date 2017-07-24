@@ -1,13 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Fabric } from "office-ui-fabric-react";
+import { Fabric, CommandBar } from "office-ui-fabric-react";
 
 import "./../scss/style.scss";
 
-import GViewRender from "./components/GViewRender";
-import Docx4JsRender from "./components/Docx4JsRender";
+import Viewer from "./components/Viewer";
 
 ReactDOM.render(
-  <Fabric><Docx4JsRender/></Fabric>,
+  <Fabric>
+    <Viewer/>
+  </Fabric>,
   document.getElementById("app")
 );
