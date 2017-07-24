@@ -3,6 +3,7 @@ import { CommandBar, IContextualMenuItem } from "office-ui-fabric-react";
 const doc = require("base64-loader!./test.docx");
 
 import GViewRender from "./GViewRender";
+import Mammoth from "./Mammoth";
 
 export interface P { }
 interface S {
@@ -28,6 +29,8 @@ export default class Viewer extends React.Component<P, S> {
       case "gview":
         return <GViewRender
           url="https://calibre-ebook.com/downloads/demos/demo.docx" />;
+      case "mammoth":
+        return <Mammoth />;
       default:
         return null;
     }
@@ -47,6 +50,12 @@ export default class Viewer extends React.Component<P, S> {
                 key: "gview",
                 name: "Google Viewer",
                 checked: currentRenderer === "gview",
+                onClick: this.changeRenderer.bind(this)
+              },
+              {
+                key: "mammoth",
+                name: "Mammoth JS",
+                checked: currentRenderer === "mammoth",
                 onClick: this.changeRenderer.bind(this)
               }
             ]
