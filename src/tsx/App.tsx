@@ -8,7 +8,7 @@ import Viewer from "./components/Viewer";
 
 ReactDOM.render(
   <Fabric>
-    <Viewer/>
+    <Viewer />
   </Fabric>,
   document.getElementById("app")
 );

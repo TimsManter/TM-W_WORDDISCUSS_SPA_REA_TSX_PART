@@ -1,21 +1,58 @@
 import * as React from "react";
 import { CommandBar, IContextualMenuItem } from "office-ui-fabric-react";
+import * as MammothJS from "mammoth";
 const doc = require("base64-loader!./demo.docx");
 
 import GViewRender from "./GViewRender";
 import Mammoth from "./Mammoth";
+import CommentList from "./CommentList";
 
 export interface P { }
 interface S {
   currentRenderer: string;
+  docHtml: string;
+  docHtmlComments: string;
 }
 
 export default class Viewer extends React.Component<P, S> {
   constructor(props: P) {
     super();
     this.state = {
-      currentRenderer: "mammoth"
+      currentRenderer: "mammoth",
+      docHtml: "",
+      docHtmlComments: ""
     };
+    this.renderDocToHtml();
+  }
+
+  renderDocToHtml() {
+    const docBuffer = new Buffer(doc, "base64");
+    MammothJS.convertToHtml({ arrayBuffer: docBuffer }, {
+      styleMap: [ "comment-reference => sup" ]
+    }).then(result => {
+      this.setState({
+        docHtml: this.cutCommentsFromDocHtml(result.value)
+      });
+    }).done();
+    
+  }
+
+  cutCommentsFromDocHtml(docHtml: string): string {
+    let commentsStartPos: number, commentsEndPos: number;
+    commentsStartPos = docHtml.lastIndexOf("<dl>");
+    if (commentsStartPos) {
+      commentsEndPos = docHtml.indexOf("</dl>", commentsStartPos);
+      if (commentsEndPos) {
+        const htmlParts = docHtml.split(/<\/?dl>/);
+        if (htmlParts.length === 3) {
+          this.setState({
+            docHtmlComments: htmlParts.splice(1, 1)[0]
+          });
+          return htmlParts.join();
+        }
+      }
+    }
+    return docHtml;
   }
 
   changeRenderer(ev: React.MouseEvent<HTMLElement>, item: IContextualMenuItem) {
@@ -30,7 +67,7 @@ export default class Viewer extends React.Component<P, S> {
         return <GViewRender
           url="https://calibre-ebook.com/downloads/demos/demo.docx" />;
       case "mammoth":
-        return <Mammoth doc={doc} />;
+        return <Mammoth docHtml={this.state.docHtml} />;
       default:
         return null;
     }
@@ -48,9 +85,9 @@ export default class Viewer extends React.Component<P, S> {
   }
 
   render() {
-    const { currentRenderer } = this.state;
+    const { currentRenderer, docHtmlComments } = this.state;
 
-    return <div id="preview-wrapper">
+    return <div id="viewer-wrapper">
       <CommandBar items={[
         {
           key: "renderer",
@@ -73,7 +110,10 @@ export default class Viewer extends React.Component<P, S> {
           }
         }
       ]} />
-      {this.returnRenderer(currentRenderer)}
+      <div id="document-wrapper">
+        {this.returnRenderer(currentRenderer)}
+        <CommentList commentsHtml={docHtmlComments} />
+      </div>
     </div>;
   }
 }

@@ -3,18 +3,23 @@ html, body, #app, .ms-Fabric {
   height: 100%;
 }
 
-#preview-wrapper {
+#viewer-wrapper {
   @extend #app;
   display: flex;
   flex-direction: column;
 }
 
+#document-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
 #document-preview {
   height: 100%;
-  width: 50%;
 }
 
 #mammoth-preview {
   @extend #document-preview;
   padding: 30px;
 }
+
