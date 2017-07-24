@@ -22,7 +22,7 @@ export default class CommentList extends React.Component<P> {
   render() {
     const { commentsHtml } = this.props;
 
-    return <div id="comments-Wrapper">
+    return <div id="comments-wrapper">
       {this.renderCards()}
     </div>;
   }
