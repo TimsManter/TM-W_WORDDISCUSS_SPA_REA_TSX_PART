@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CommandBar, IContextualMenuItem } from "office-ui-fabric-react";
-const doc = require("base64-loader!./test.docx");
+const doc = require("base64-loader!./demo.docx");
 
 import GViewRender from "./GViewRender";
 import Mammoth from "./Mammoth";
@@ -30,9 +30,20 @@ export default class Viewer extends React.Component<P, S> {
         return <GViewRender
           url="https://calibre-ebook.com/downloads/demos/demo.docx" />;
       case "mammoth":
-        return <Mammoth />;
+        return <Mammoth doc={doc} />;
       default:
         return null;
+    }
+  }
+
+  rendererName(key: string) {
+    switch (key) {
+      case "gview":
+        return "Google Viewer";
+      case "mammoth":
+        return "Mammoth";
+      default:
+        return "";
     }
   }
 
@@ -43,18 +54,18 @@ export default class Viewer extends React.Component<P, S> {
       <CommandBar items={[
         {
           key: "renderer",
-          name: "Renderer",
+          name: `Renderer: ${this.rendererName(currentRenderer)}`,
           subMenuProps: {
             items: [
               {
                 key: "gview",
-                name: "Google Viewer",
+                name: this.rendererName("gview"),
                 checked: currentRenderer === "gview",
                 onClick: this.changeRenderer.bind(this)
               },
               {
                 key: "mammoth",
-                name: "Mammoth JS",
+                name: this.rendererName("mammoth"),
                 checked: currentRenderer === "mammoth",
                 onClick: this.changeRenderer.bind(this)
               }

@@ -1,8 +1,9 @@
 import * as React from "react";
 import * as MammothJS from "mammoth";
-const doc = require("base64-loader!./demo.docx");
 
-export interface P { }
+export interface P {
+  doc: string;
+}
 interface S {
   docHtml: string;
 }
@@ -14,7 +15,7 @@ export default class Mammoth extends React.Component<P, S> {
       docHtml: ""
     };
 
-    const docBuffer = new Buffer(doc, "base64");
+    const docBuffer = new Buffer(props.doc, "base64");
     MammothJS.convertToHtml({ arrayBuffer: docBuffer })
       .then(result => {
         this.setState({ docHtml: result.value });

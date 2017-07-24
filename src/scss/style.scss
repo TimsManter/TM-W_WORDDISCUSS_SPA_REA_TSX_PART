@@ -9,7 +9,12 @@ html, body, #app, .ms-Fabric {
   flex-direction: column;
 }
 
-#document-preview, #mammoth-preview {
+#document-preview {
   height: 100%;
   width: 50%;
+}
+
+#mammoth-preview {
+  @extend #document-preview;
+  padding: 30px;
 }
