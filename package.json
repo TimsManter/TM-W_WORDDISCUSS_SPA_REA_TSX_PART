@@ -25,6 +25,7 @@
     "fetch-jsonp": "^1.1.1",
     "fs": "0.0.1-security",
     "jsonp": "^0.2.1",
+    "mammoth": "^1.4.2",
     "office-ui-fabric-react": "^4.21.3",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
