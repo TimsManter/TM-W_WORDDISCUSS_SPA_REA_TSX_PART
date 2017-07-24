@@ -23,6 +23,16 @@ export default class Viewer extends React.Component<P, S> {
     });
   }
 
+  returnRenderer(key: string): JSX.Element | null {
+    switch (key) {
+      case "gview":
+        return <GViewRender
+          url="https://calibre-ebook.com/downloads/demos/demo.docx" />;
+      default:
+        return null;
+    }
+  }
+
   render() {
     const { currentRenderer } = this.state;
 
@@ -43,8 +53,7 @@ export default class Viewer extends React.Component<P, S> {
           }
         }
       ]} />
-      <GViewRender
-        url="https://calibre-ebook.com/downloads/demos/demo.docx"/>
+      {this.returnRenderer(currentRenderer)}
     </div>;
   }
 }
