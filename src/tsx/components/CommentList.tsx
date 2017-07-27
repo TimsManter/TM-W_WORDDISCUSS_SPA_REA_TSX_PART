@@ -21,19 +21,15 @@ export default class CommentList extends React.Component<P> {
       const title = commentParts[c]
         .split(/id="[^>]*>|<\/dt>.*/i)
         .filter(s => s !== "")[0];
-      console.log(title);
       const content = commentParts[c]
         .split(/.*<p .*?>|<\/p.*/i)
         .filter(s => s !== "")[0];
-      console.log(content);
       const commentRef = commentParts[c]
         .split(/.*href="|">↑.*/i)
         .filter(s => s !== "")[0];
-      console.log(commentRef);
       const anchorId = commentParts[c]
         .split(/id="|">.*$/i)
         .filter(s => s !== "")[0];
-      console.log(anchorId);
       cards.push(<DocumentCard key={c}>
         <span id={anchorId} />
         <DocumentCardLocation location={title} locationHref={commentRef} />
