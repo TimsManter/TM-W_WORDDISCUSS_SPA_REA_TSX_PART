@@ -6,7 +6,8 @@
       "command": "npm",
       "args": [
         "install"
-      ]
+      ],
+      "type": "shell"
     },
     {
       "taskName": "build:dev",
@@ -17,7 +18,8 @@
       ],
       "problemMatcher": [
         "$tslint5"
-      ]
+      ],
+      "type": "shell"
     },
     {
       "taskName": "build:prod",
@@ -25,7 +27,8 @@
       "command": "webpack",
       "args": [
         "--env=prod"
-      ]
+      ],
+      "type": "shell"
     },
     {
       "taskName": "start",
@@ -36,7 +39,8 @@
       "command": "webpack-dev-server",
       "args": [
         "--open"
-      ]
+      ],
+      "type": "shell"
     }
   ]
 }
