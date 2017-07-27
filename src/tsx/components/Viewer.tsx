@@ -29,7 +29,11 @@ export default class Viewer extends React.Component<P, S> {
     const docBuffer = new Buffer(doc, "base64");
     MammothJS.convertToHtml({ arrayBuffer: docBuffer }, {
       paragraphId: true,
-      styleMap: [ "comment-reference => sup", "comment-range => span" ]
+      styleMap: [
+        "comment-reference => sup",
+        "comment-range => span",
+        "p[style-name='Title'] => h1.ms-font-title.doc-title"
+      ]
     }).then(result => {
       this.setState({
         //docHtml: result.value
