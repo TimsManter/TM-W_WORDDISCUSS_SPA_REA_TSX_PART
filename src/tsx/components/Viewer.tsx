@@ -36,7 +36,6 @@ export default class Viewer extends React.Component<P, S> {
       ]
     }).then(result => {
       this.setState({
-        //docHtml: result.value
         docHtml: this.cutCommentsFromDocHtml(result.value)
       });
     }).done();
@@ -117,8 +116,16 @@ export default class Viewer extends React.Component<P, S> {
         }
       ]} />
       <div id="document-wrapper">
-        {this.returnRenderer(currentRenderer)}
-        <CommentList commentsHtml={docHtmlComments} />
+        <div className="ms-Grid">
+          <div className="ms-Grid-row">
+            <div className="ms-Grid-col ms-sm12 ms-md8">
+              {this.returnRenderer(currentRenderer)}
+            </div>
+            <div className="ms-Grid-col ms-sm12 ms-md4">
+              <CommentList commentsHtml={docHtmlComments} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>;
   }
