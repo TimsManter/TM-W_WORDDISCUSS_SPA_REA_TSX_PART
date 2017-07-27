@@ -12,6 +12,7 @@ html, body, #app, .ms-Fabric {
 #document-wrapper {
   display: flex;
   flex-direction: row;
+  height: 100%;
 }
 
 #document-preview {
@@ -24,3 +25,6 @@ html, body, #app, .ms-Fabric {
   flex-basis: 70%;
 }
 
+#gview-preview {
+  @extend #mammoth-preview;
+}
