@@ -15,6 +15,12 @@ export default class Mammoth extends React.Component<P, S> {
     };
   }
 
+  componentDidMount() {
+    document.onselectionchange = () => {
+      let selection = document.getSelection();
+    };
+  }
+
   componentWillReceiveProps(props: P) {
     let html = props.docHtml;
     if (html === "") { return; }
@@ -23,13 +29,41 @@ export default class Mammoth extends React.Component<P, S> {
     let commentStarts = doc.querySelectorAll("span[data-comment-edge=\"start\"]");
     for (let s in commentStarts) {
       if (isNaN(Number(s))) { continue; }
-      let id = commentStarts[s].getAttribute("data-comment-id");
-      commentStarts[s].innerHTML = "<mark>";
-      console.log(commentStarts[s]);
-      let commentEnd = doc.querySelector(`span[data-comment-edge=\"end\"][data-comment-edge=\"${id}\"]`);
-      if (commentEnd) { commentEnd.innerHTML = "</mark>"; }
+      let startTag = commentStarts[s];
+      let id = startTag.getAttribute("data-comment-id");
+      let parent = startTag.parentNode;
+      if (parent) {
+        let mark = doc.createElement("mark");
+        if (parent.lastChild === startTag) {
+          parent.appendChild(mark);
+        } else {
+          parent.insertBefore(mark, startTag.nextSibling);
+        }
+        let commentElements = this.elementsAfter(mark);
+        for (let e in commentElements) {
+          mark.appendChild(commentElements[e]);
+        }
+      }
     }
     this.setState({ docHtml: doc.documentElement.outerHTML });
+  }
+
+  elementsAfter(elem: Element): Element[] {
+    let tmpElem: Element = elem;
+    let commentElements: Element[] = [];
+    while (tmpElem.nextSibling !== null) {
+      let nextElement = tmpElem.nextSibling as Element;
+      if (nextElement.getAttribute && nextElement.getAttribute("data-comment-edge")) { break; }
+      commentElements.push(nextElement);
+      tmpElem = nextElement;
+    }
+    return commentElements;
+  }
+
+  removeElements(elems: Element[]) {
+    for (let e in elems) {
+      elems[e].remove();
+    }
   }
 
   render() {
