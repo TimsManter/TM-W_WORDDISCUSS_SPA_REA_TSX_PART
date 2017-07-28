@@ -1,4 +1,4 @@
-# React new project template
+# React DOCX document viewer
 
 * @Author: TimsManter
 * @AuthorSite: [TimsManter.NET](http://timsmanter.net/)
