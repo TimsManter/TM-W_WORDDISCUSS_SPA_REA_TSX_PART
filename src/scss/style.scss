@@ -12,8 +12,10 @@ html, body, #app, .ms-Fabric {
 
 #document-wrapper {
   height: 100%;
+  overflow-y: auto;
+  padding-top: 20px;
   .ms-Grid, .ms-Grid-row, .ms-Grid-col {
-    height: 100%;
+    height: calc(100% - 2px);
   }
 }
 
@@ -23,10 +25,13 @@ html, body, #app, .ms-Fabric {
 
 #mammoth-preview {
   @extend #document-preview;
-  padding: 30px;
+  padding: 0 30px;
   flex-basis: 70%;
   mark:not(.active) {
     background-color: transparent;
+  }
+  :first-child {
+    margin-top: 0;
   }
 }
 
@@ -38,4 +43,23 @@ html, body, #app, .ms-Fabric {
 
 .doc-title {
   font-size: 42px;
+}
+
+.ms-Callout-container {
+  .ms-Callout-main {
+    max-width: 500px;
+    .callout-content {
+      padding: 0 10px;
+      p {
+        max-height: 100px;
+        overflow-y: auto;
+      }
+      textarea {
+        padding: 5px 10px;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  }
 }

@@ -1,24 +1,47 @@
 import * as React from "react";
+import { Callout } from "office-ui-fabric-react/lib/Callout";
+import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
 
 export interface P {
   docHtml: string;
 }
 interface S {
   docHtml: string;
+  calloutPosition: MouseEvent | null;
+  selectedText: string;
 }
 
 export default class Mammoth extends React.Component<P, S> {
   constructor(props: P) {
     super();
+    this.onCalloutDismiss = this.onCalloutDismiss.bind(this);
     this.state = {
-      docHtml: ""
+      docHtml: "",
+      calloutPosition: null,
+      selectedText: ""
     };
   }
 
   componentDidMount() {
-    document.onselectionchange = () => {
-      let selection = document.getSelection();
-    };
+    let doc = document.getElementById("mammoth-preview");
+    if (doc) {
+      doc.onmouseup = (event) => {
+        let selection = document.getSelection();
+        let selectionText = selection.toString();
+        if (selectionText !== "") {
+          console.log(selectionText);
+          this.setState({
+            selectedText: selectionText,
+            calloutPosition: event
+          });
+        } else {
+          this.setState({
+            selectedText: "",
+            calloutPosition: null
+          });
+        }
+      };
+    }
   }
 
   componentWillReceiveProps(props: P) {
@@ -67,11 +90,36 @@ export default class Mammoth extends React.Component<P, S> {
     }
   }
 
-  render() {
-    const { docHtml } = this.state;
+  onCalloutDismiss(event) {
+    this.setState({
+      calloutPosition: null,
+      selectedText: ""
+    });
+  }
 
-    return <div
+  render() {
+    const { docHtml, calloutPosition, selectedText } = this.state;
+
+    return <div>
+      <div
       dangerouslySetInnerHTML={{__html: docHtml}}
-      id="mammoth-preview" />;
+        id="mammoth-preview" />
+      {calloutPosition && <Callout
+        target={ calloutPosition }
+        onDismiss={ this.onCalloutDismiss }
+        setInitialFocus={true}>
+        <div className="callout-content">
+          <h2 className="ms-font-xl">Add comment</h2>
+          <p>"{selectedText}"</p>
+          <textarea></textarea>
+        </div>
+        <CommandBar items={[
+          {
+            key: "add",
+            name: "Add"
+          }
+        ]}/>
+      </Callout>}
+    </div>;
   }
 }

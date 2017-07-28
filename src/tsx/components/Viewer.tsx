@@ -95,40 +95,36 @@ export default class Viewer extends React.Component<P, S> {
     const { currentRenderer, docHtmlComments } = this.state;
 
     return <div id="viewer-wrapper">
-      <div className="ms-Grid">
-        <div className="ms-Grid-row">
-          <CommandBar items={[
-            {
-              key: "renderer",
-              name: `Renderer: ${this.rendererName(currentRenderer)}`,
-              subMenuProps: {
-                items: [
-                  {
-                    key: "gview",
-                    name: this.rendererName("gview"),
-                    checked: currentRenderer === "gview",
-                    onClick: this.changeRenderer.bind(this)
-                  },
-                  {
-                    key: "mammoth",
-                    name: this.rendererName("mammoth"),
-                    checked: currentRenderer === "mammoth",
-                    onClick: this.changeRenderer.bind(this)
-                  }
-                ]
+      <CommandBar items={[
+        {
+          key: "renderer",
+          name: `Renderer: ${this.rendererName(currentRenderer)}`,
+          subMenuProps: {
+            items: [
+              {
+                key: "gview",
+                name: this.rendererName("gview"),
+                checked: currentRenderer === "gview",
+                onClick: this.changeRenderer.bind(this)
+              },
+              {
+                key: "mammoth",
+                name: this.rendererName("mammoth"),
+                checked: currentRenderer === "mammoth",
+                onClick: this.changeRenderer.bind(this)
               }
-            }
-          ]} />
-          <div id="document-wrapper">
-            <div className="ms-Grid">
-              <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-u-sm12 ms-u-md8">
-                  {this.returnRenderer(currentRenderer)}
-                </div>
-                <div className="ms-Grid-col ms-u-sm12 ms-u-md4">
-                  <CommentList commentsHtml={docHtmlComments} />
-                </div>
-              </div>
+            ]
+          }
+        }
+      ]} />
+      <div id="document-wrapper">
+        <div className="ms-Grid">
+          <div className="ms-Grid-row">
+            <div className="ms-Grid-col ms-u-sm12 ms-u-md8">
+              {this.returnRenderer(currentRenderer)}
+            </div>
+            <div className="ms-Grid-col ms-u-sm12 ms-u-md4">
+              <CommentList commentsHtml={docHtmlComments} />
             </div>
           </div>
         </div>
