@@ -34,6 +34,7 @@ export default class Mammoth extends React.Component<P, S> {
       let parent = startTag.parentNode;
       if (parent) {
         let mark = doc.createElement("mark");
+        mark.setAttribute("data-comment-id", String(id));
         if (parent.lastChild === startTag) {
           parent.appendChild(mark);
         } else {
