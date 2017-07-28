@@ -1,6 +1,7 @@
 html, body, #app, .ms-Fabric {
   width: 100%;
   height: 100%;
+  margin: 0;
 }
 
 #viewer-wrapper {
@@ -10,7 +11,10 @@ html, body, #app, .ms-Fabric {
 }
 
 #document-wrapper {
-
+  height: 100%;
+  .ms-Grid, .ms-Grid-row, .ms-Grid-col {
+    height: 100%;
+  }
 }
 
 #document-preview {
@@ -25,6 +29,8 @@ html, body, #app, .ms-Fabric {
 
 #gview-preview {
   @extend #mammoth-preview;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .doc-title {
