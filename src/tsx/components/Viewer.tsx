@@ -1,5 +1,7 @@
 import * as React from "react";
-import { CommandBar, IContextualMenuItem } from "office-ui-fabric-react";
+import { Fabric } from "office-ui-fabric-react/lib/Fabric";
+import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
+import { IContextualMenuItem } from "office-ui-fabric-react/lib/ContextualMenu";
 import * as MammothJS from "mammoth";
 const doc = require("base64-loader!./demo.docx");
 
@@ -93,36 +95,40 @@ export default class Viewer extends React.Component<P, S> {
     const { currentRenderer, docHtmlComments } = this.state;
 
     return <div id="viewer-wrapper">
-      <CommandBar items={[
-        {
-          key: "renderer",
-          name: `Renderer: ${this.rendererName(currentRenderer)}`,
-          subMenuProps: {
-            items: [
-              {
-                key: "gview",
-                name: this.rendererName("gview"),
-                checked: currentRenderer === "gview",
-                onClick: this.changeRenderer.bind(this)
-              },
-              {
-                key: "mammoth",
-                name: this.rendererName("mammoth"),
-                checked: currentRenderer === "mammoth",
-                onClick: this.changeRenderer.bind(this)
+      <div className="ms-Grid">
+        <div className="ms-Grid-row">
+          <CommandBar items={[
+            {
+              key: "renderer",
+              name: `Renderer: ${this.rendererName(currentRenderer)}`,
+              subMenuProps: {
+                items: [
+                  {
+                    key: "gview",
+                    name: this.rendererName("gview"),
+                    checked: currentRenderer === "gview",
+                    onClick: this.changeRenderer.bind(this)
+                  },
+                  {
+                    key: "mammoth",
+                    name: this.rendererName("mammoth"),
+                    checked: currentRenderer === "mammoth",
+                    onClick: this.changeRenderer.bind(this)
+                  }
+                ]
               }
-            ]
-          }
-        }
-      ]} />
-      <div id="document-wrapper">
-        <div className="ms-Grid">
-          <div className="ms-Grid-row">
-            <div className="ms-Grid-col ms-sm12 ms-md8">
-              {this.returnRenderer(currentRenderer)}
-            </div>
-            <div className="ms-Grid-col ms-sm12 ms-md4">
-              <CommentList commentsHtml={docHtmlComments} />
+            }
+          ]} />
+          <div id="document-wrapper">
+            <div className="ms-Grid">
+              <div className="ms-Grid-row">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md8">
+                  {this.returnRenderer(currentRenderer)}
+                </div>
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4">
+                  <CommentList commentsHtml={docHtmlComments} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
