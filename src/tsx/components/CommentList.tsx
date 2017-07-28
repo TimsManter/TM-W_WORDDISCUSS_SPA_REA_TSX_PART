@@ -16,7 +16,6 @@ export default class CommentList extends React.Component<P> {
     let cards: JSX.Element[] = [];
     const commentParts =
       comments.split(/(?:<dt |<\/dd>)/i).filter(s => s !== "");
-    console.log(commentParts);
     for (let c in commentParts) {
       const title = commentParts[c]
         .split(/id="[^>]*>|<\/dt>.*/i)
