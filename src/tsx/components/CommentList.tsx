@@ -29,13 +29,27 @@ export default class CommentList extends React.Component<P> {
       const anchorId = commentParts[c]
         .split(/id="|">.*$/i)
         .filter(s => s !== "")[0];
-      cards.push(<DocumentCard key={c}>
+      let id = anchorId.split("-")[1];
+      cards.push(<div key={c}
+        onMouseEnter={() => this.onMouseOver(id)}
+        onMouseLeave={() => this.onMouseLeave(id)}>
+        <DocumentCard>
         <span id={anchorId} />
         <DocumentCardLocation location={title} locationHref={commentRef} />
         <DocumentCardTitle title={content} />
-      </DocumentCard>);
+        </DocumentCard>
+      </div>);
     }
     return cards;
+  }
+
+  onMouseOver(id) {
+    let mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`);
+    if (mark) { mark.classList.add("active"); }
+  }
+  onMouseLeave(id) {
+    let mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`);
+    if (mark) { mark.classList.remove("active"); }
   }
 
   render() {

@@ -25,7 +25,7 @@ html, body, #app, .ms-Fabric {
   @extend #document-preview;
   padding: 30px;
   flex-basis: 70%;
-  mark:not(:active) {
+  mark:not(.active) {
     background-color: transparent;
   }
 }
