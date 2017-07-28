@@ -30,7 +30,10 @@ export default class CommentList extends React.Component<P> {
         .split(/id="|">.*$/i)
         .filter(s => s !== "")[0];
       let id = anchorId.split("-")[1];
-      cards.push(<div key={c}
+      let comment = document.querySelector(`mark[data-comment-id=\"${id}\"]`) as HTMLElement;
+      let offsetTop = 0;
+      if (comment) { offsetTop = comment.offsetTop; }
+      cards.push(<div key={c} style={{position: "relative", top: offsetTop}}
         onMouseEnter={() => this.onMouseOver(id)}
         onMouseLeave={() => this.onMouseLeave(id)}>
         <DocumentCard>
