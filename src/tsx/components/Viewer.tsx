@@ -32,7 +32,7 @@ export default class Viewer extends React.Component<P, S> {
     MammothJS.convertToHtml({ arrayBuffer: docBuffer }, {
       paragraphId: true,
       styleMap: [
-        //"comment-reference => sup",
+        "comment-reference => sup.comment-reference",
         "comment-range => span",
         "p[style-name='Title'] => h1.ms-font-title.doc-title"
       ]
