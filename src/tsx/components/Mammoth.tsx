@@ -49,6 +49,11 @@ export default class Mammoth extends React.Component<P, S> {
     if (html === "") { return; }
     let parser = new DOMParser();
     let doc = parser.parseFromString(html, "text/html");
+    //this.markComments(doc);
+    this.setState({ docHtml: doc.documentElement.outerHTML });
+  }
+
+  markComments(doc) {
     let commentStarts = doc.querySelectorAll("span[data-comment-edge=\"start\"]");
     for (let s in commentStarts) {
       if (isNaN(Number(s))) { continue; }
@@ -69,7 +74,6 @@ export default class Mammoth extends React.Component<P, S> {
         }
       }
     }
-    this.setState({ docHtml: doc.documentElement.outerHTML });
   }
 
   elementsAfter(elem: Element): Element[] {
