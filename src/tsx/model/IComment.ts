@@ -5,4 +5,5 @@ export default interface IComment {
   author?: string;
   anchorId: string;
   commentRef: string;
+  responses?: IComment[];
 }

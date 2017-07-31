@@ -1,35 +1,34 @@
 import IComment from "./../model/IComment";
 
 export default class CommentsParser {
-  private _htmlRawDocument: string;
+  private _htmlDocument: HTMLElement;
   private _comments: IComment[] = [];
 
   public get Comments() {
     return this._comments;
   }
 
-  constructor(rawHtml: string) {
-    this._htmlRawDocument = rawHtml;
+  constructor(html: HTMLElement) {
+    this._htmlDocument = html;
 
-    const commentParts = this.cleanSplit(rawHtml, /(?:<dt |<\/dd>)/i);
-    for (let c in commentParts) {
-      const anchorId = this.cleanSplit(commentParts[c], /id="|">.*$/i)[0];
-      let newComment: IComment = {
-        title: this.cleanSplit(commentParts[c], /id="[^>]*>|<\/dt>.*/i)[0],
-        content: this.cleanSplit(commentParts[c], /.*<p ?.*?>|<a.*/i)[0],
-        commentRef: this.cleanSplit(commentParts[c], /.*href="|">↑.*/i)[0],
-        id: Number(anchorId.split("-")[1]),
-        anchorId: anchorId
-      };
-      this._comments.push(newComment);
+    const dtNodes = html.querySelectorAll("dt");
+    for (let d in dtNodes) {
+      if (!dtNodes[d].tagName) { continue; }
+      const dt: HTMLElement = dtNodes[d];
+      const anchorId = dt.attributes["id"];
+      const id = anchorId.value.split("-")[1];
+      const dd = dt.nextElementSibling;
+      if (!dd) { continue; }
+      const title = dt.innerText.trim();
+      const ddPara = dd.firstChild;
+      if (!ddPara) { continue; }
+      const ddText = ddPara.firstChild;
+      if (!ddText) { continue; }
+      const content = ddText.textContent ? ddText.textContent.trim() : "";
+      const ddLink = ddPara.lastChild;
+      if (!ddLink) { continue; }
+      const commentRef = ddLink.attributes["href"];
+      this._comments.push({ id, anchorId, title, content, commentRef });
     }
-  }
-    
-  private cleanSplit(str: string, regex: RegExp): string[] {
-    return this.filterEmpty(str.split(regex));
-  }
-
-  private filterEmpty(array: string[]): string[] {
-    return array.filter(s => s !== "");
   }
 }

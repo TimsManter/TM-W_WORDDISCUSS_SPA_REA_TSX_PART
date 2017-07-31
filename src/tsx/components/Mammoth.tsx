@@ -3,10 +3,9 @@ import { Callout } from "office-ui-fabric-react/lib/Callout";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
 
 export interface P {
-  docHtml: string;
+  document: Document | null;
 }
 interface S {
-  docHtml: string;
   calloutPosition: MouseEvent | null;
   selectedText: string;
 }
@@ -16,7 +15,6 @@ export default class Mammoth extends React.Component<P, S> {
     super();
     this.onCalloutDismiss = this.onCalloutDismiss.bind(this);
     this.state = {
-      docHtml: "",
       calloutPosition: null,
       selectedText: ""
     };
@@ -45,12 +43,8 @@ export default class Mammoth extends React.Component<P, S> {
   }
 
   componentWillReceiveProps(props: P) {
-    let html = props.docHtml;
-    if (html === "") { return; }
-    let parser = new DOMParser();
-    let doc = parser.parseFromString(html, "text/html");
+    const doc = props.document;
     //this.markComments(doc);
-    this.setState({ docHtml: doc.documentElement.outerHTML });
   }
 
   markComments(doc) {
@@ -102,11 +96,13 @@ export default class Mammoth extends React.Component<P, S> {
   }
 
   render() {
-    const { docHtml, calloutPosition, selectedText } = this.state;
+    const { calloutPosition, selectedText } = this.state;
+    const { document } = this.props;
+    const docContent = document ? document.body.innerHTML : null;
 
     return <div>
       <div
-      dangerouslySetInnerHTML={{__html: docHtml}}
+      dangerouslySetInnerHTML={{__html: docContent ? docContent : "" }}
         id="mammoth-preview" />
       {calloutPosition && <Callout
         target={ calloutPosition }

@@ -8,15 +8,14 @@ import CommentsParser from "./../helpers/CommentsParser";
 import IComment from "./../model/IComment";
 
 export interface P {
-  commentsHtml: string;
+  comments: IComment[];
 }
 
 export default class CommentList extends React.Component<P> {
 
   renderCards(): JSX.Element[] {
-    const { commentsHtml } = this.props;
+    const { comments } = this.props;
     let cards: JSX.Element[] = [];
-    const comments = new CommentsParser(commentsHtml).Comments;
     for (let c in comments) {
       const { id, title, content, anchorId, commentRef } = comments[c];
       let mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`) as HTMLElement;
@@ -45,8 +44,6 @@ export default class CommentList extends React.Component<P> {
   }
 
   render() {
-    const { commentsHtml } = this.props;
-
     return <div id="comments-wrapper">
       {this.renderCards()}
     </div>;

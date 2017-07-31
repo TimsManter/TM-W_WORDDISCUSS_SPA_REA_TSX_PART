@@ -8,12 +8,14 @@ const doc = require("base64-loader!./demo.docx");
 import GViewRender from "./GViewRender";
 import Mammoth from "./Mammoth";
 import CommentList from "./CommentList";
+import CommentsParser from "./../helpers/CommentsParser";
+import IComments from "./../model/IComment";
 
 export interface P { }
 interface S {
   currentRenderer: string;
-  docHtml: string;
-  docHtmlComments: string;
+  document: Document | null;
+  comments: IComments[];
 }
 
 export default class Viewer extends React.Component<P, S> {
@@ -21,8 +23,8 @@ export default class Viewer extends React.Component<P, S> {
     super();
     this.state = {
       currentRenderer: "mammoth",
-      docHtml: "",
-      docHtmlComments: ""
+      document: null,
+      comments: []
     };
     this.renderDocToHtml();
   }
@@ -37,29 +39,25 @@ export default class Viewer extends React.Component<P, S> {
         "p[style-name='Title'] => h1.ms-font-title.doc-title"
       ]
     }).then(result => {
+      const parser = new DOMParser();
+      const document = parser.parseFromString(result.value, "text/html");
       this.setState({
-        docHtml: this.cutCommentsFromDocHtml(result.value)
+        document: document,
+        comments: this.cutCommentsFromDocHtml(document)
       });
     }).done();
     
   }
 
-  cutCommentsFromDocHtml(docHtml: string): string {
-    let commentsStartPos: number, commentsEndPos: number;
-    commentsStartPos = docHtml.lastIndexOf("<dl>");
-    if (commentsStartPos) {
-      commentsEndPos = docHtml.indexOf("</dl>", commentsStartPos);
-      if (commentsEndPos) {
-        const htmlParts = docHtml.split(/<\/?dl>/);
-        if (htmlParts.length === 3) {
-          this.setState({
-            docHtmlComments: htmlParts.splice(1, 1)[0]
-          });
-          return htmlParts.join();
-        }
-      }
-    }
-    return docHtml;
+  cutCommentsFromDocHtml(doc: Document): IComments[] {
+    if (!doc) { return []; }
+    const dlNodes = doc ? doc.querySelectorAll("dl") : null;
+    if (!dlNodes) { return []; }
+    const dl = dlNodes[dlNodes.length - 1];
+    const parser = new CommentsParser(dl);
+    const comments = parser.Comments;
+    dlNodes[dlNodes.length - 1].remove();
+    return comments;
   }
 
   changeRenderer(ev: React.MouseEvent<HTMLElement>, item: IContextualMenuItem) {
@@ -74,7 +72,7 @@ export default class Viewer extends React.Component<P, S> {
         return <GViewRender
           url="https://calibre-ebook.com/downloads/demos/demo.docx" />;
       case "mammoth":
-        return <Mammoth docHtml={this.state.docHtml} />;
+        return <Mammoth document={this.state.document} />;
       default:
         return null;
     }
@@ -92,7 +90,7 @@ export default class Viewer extends React.Component<P, S> {
   }
 
   render() {
-    const { currentRenderer, docHtmlComments } = this.state;
+    const { currentRenderer, comments } = this.state;
 
     return <div id="viewer-wrapper">
       <CommandBar items={[
@@ -124,7 +122,7 @@ export default class Viewer extends React.Component<P, S> {
               {this.returnRenderer(currentRenderer)}
             </div>
             <div className="ms-Grid-col ms-u-sm12 ms-u-md4">
-              <CommentList commentsHtml={docHtmlComments} />
+              <CommentList comments={comments} />
             </div>
           </div>
         </div>
