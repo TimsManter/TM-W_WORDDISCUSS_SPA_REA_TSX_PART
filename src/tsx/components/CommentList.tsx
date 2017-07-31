@@ -17,7 +17,7 @@ export default class CommentList extends React.Component<P> {
     const commentParts = this.cleanSplit(comments, /(?:<dt |<\/dd>)/i);
     for (let c in commentParts) {
       const title = this.cleanSplit(commentParts[c], /id="[^>]*>|<\/dt>.*/i)[0];
-      const content = this.cleanSplit(commentParts[c], /.*<p .*?>|<\/p.*/i)[0];
+      const content = this.cleanSplit(commentParts[c], /.*<p ?.*?>|<a.*/i)[0];
       const commentRef = this.cleanSplit(commentParts[c], /.*href="|">↑.*/i)[0];
       const anchorId = this.cleanSplit(commentParts[c], /id="|">.*$/i)[0];
       let id = anchorId.split("-")[1];
