@@ -15,8 +15,8 @@ export default class CommentsParser {
     for (let d in dtNodes) {
       if (!dtNodes[d].tagName) { continue; }
       const dt: HTMLElement = dtNodes[d];
-      const anchorId = dt.attributes["id"];
-      const id = anchorId.value.split("-")[1];
+      const anchorId = dt.attributes["id"].value;
+      const id = anchorId.split("-")[1];
       const dd = dt.nextElementSibling;
       if (!dd) { continue; }
       const title = dt.innerText.trim();
@@ -27,7 +27,7 @@ export default class CommentsParser {
       const content = ddText.textContent ? ddText.textContent.trim() : "";
       const ddLink = ddPara.lastChild;
       if (!ddLink) { continue; }
-      const commentRef = ddLink.attributes["href"];
+      const commentRef = ddLink.attributes["href"].value;
       this._comments.push({ id, anchorId, title, content, commentRef });
     }
   }
