@@ -12,7 +12,9 @@
     {
       "taskName": "npm:test",
       "command": "npm",
-      "args": [ "test" ],
+      "args": [
+        "test"
+      ],
       "type": "shell",
       "group": {
         "kind": "test",
@@ -50,7 +52,8 @@
       "args": [
         "--open"
       ],
-      "type": "shell"
+      "type": "shell",
+      "problemMatcher": []
     }
   ]
 }
