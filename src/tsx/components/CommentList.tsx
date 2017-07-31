@@ -4,6 +4,8 @@ import {
   DocumentCardTitle,
   DocumentCardLocation
 } from "office-ui-fabric-react";
+import CommentsParser from "./../helpers/CommentsParser";
+import IComment from "./../model/IComment";
 
 export interface P {
   commentsHtml: string;
@@ -12,18 +14,14 @@ export interface P {
 export default class CommentList extends React.Component<P> {
 
   renderCards(): JSX.Element[] {
-    const comments = this.props.commentsHtml;
+    const { commentsHtml } = this.props;
     let cards: JSX.Element[] = [];
-    const commentParts = this.cleanSplit(comments, /(?:<dt |<\/dd>)/i);
-    for (let c in commentParts) {
-      const title = this.cleanSplit(commentParts[c], /id="[^>]*>|<\/dt>.*/i)[0];
-      const content = this.cleanSplit(commentParts[c], /.*<p ?.*?>|<a.*/i)[0];
-      const commentRef = this.cleanSplit(commentParts[c], /.*href="|">↑.*/i)[0];
-      const anchorId = this.cleanSplit(commentParts[c], /id="|">.*$/i)[0];
-      let id = anchorId.split("-")[1];
-      let comment = document.querySelector(`mark[data-comment-id=\"${id}\"]`) as HTMLElement;
+    const comments = new CommentsParser(commentsHtml).Comments;
+    for (let c in comments) {
+      const { id, title, content, anchorId, commentRef } = comments[c];
+      let mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`) as HTMLElement;
       let offsetTop = 0;
-      if (comment) { offsetTop = comment.offsetTop; }
+      if (mark) { offsetTop = mark.offsetTop; }
       cards.push(<div key={c} style={{position: "absolute", top: offsetTop}}
         onMouseEnter={() => this.onMouseOver(id)}
         onMouseLeave={() => this.onMouseLeave(id)}>
@@ -44,14 +42,6 @@ export default class CommentList extends React.Component<P> {
   onMouseLeave(id) {
     let mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`);
     if (mark) { mark.classList.remove("active"); }
-  }
-
-  cleanSplit(str: string, regex: RegExp): string[] {
-    return this.filterEmpty(str.split(regex));
-  }
-
-  filterEmpty(array: string[]): string[] {
-    return array.filter(s => s !== "");
   }
 
   render() {
