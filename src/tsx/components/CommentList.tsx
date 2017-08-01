@@ -23,7 +23,7 @@ export default class CommentList extends React.Component<P> {
           <p className="comment-content">{comment.content}</p>
           <ul className="comment-responses">
             {!comment.responses ? [] : comment.responses.map((r, j) => (
-              <li key={j}>{r.content}</li>
+              <li key={j}><p>{r.content}</p></li>
             ))}
           </ul>
           <CommandBar items={[

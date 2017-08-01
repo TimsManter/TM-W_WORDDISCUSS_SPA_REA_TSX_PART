@@ -28,7 +28,7 @@ html, body, #app, .ms-Fabric {
   padding: 0 30px;
   flex-basis: 70%;
   mark:not(.active) {
-    background-color: transparent;
+    //background-color: transparent;
   }
   :first-child {
     margin-top: 0;
@@ -87,6 +87,9 @@ html, body, #app, .ms-Fabric {
   }
   .comment-responses {
     margin-bottom: 5px;
+    li > p {
+      margin: 0;
+    }
   }
   .ms-CommandBar {
     background-color: unset;
