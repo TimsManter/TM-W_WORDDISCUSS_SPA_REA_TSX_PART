@@ -14,11 +14,18 @@ export interface P {
 
 export default class CommentList extends React.Component<P> {
 
+  componentDidMount() {
+    document.addEventListener("resize", this.setCommentsOffset);
+  }
+  componentDidUpdate() {
+    this.setCommentsOffset();
+  }
+
   renderCards(): JSX.Element {
     const { comments } = this.props;
 
     return <List items={comments} onRenderCell={(comment: IComment, i) => (
-        <div key={i} className="comment-box">
+      <div key={i} data-comment-id={comment.id} className="comment-box">
           <h5 className="comment-author">{comment.author}</h5>
           <p className="comment-content">{comment.content}</p>
           <ul className="comment-responses">
@@ -35,6 +42,19 @@ export default class CommentList extends React.Component<P> {
           ]}/>
         </div>
       )} />;
+  }
+
+  setCommentsOffset() {
+    const html = document;
+    const comments = html.querySelectorAll("div.comment-box");
+    for (let c in comments) {
+      if (!(comments[c] instanceof HTMLDivElement)) { continue; }
+      const comment = comments[c] as HTMLDivElement;
+      const id = comment.getAttribute("data-comment-id");
+      const mark = html.querySelector(`mark[data-comment-id="${id}"]`);
+      const offset = String((mark as HTMLElement).offsetTop);
+      comment.style.top = mark ? offset + "px" : "0";
+    }
   }
 
   onMouseOver(id) {

@@ -69,6 +69,7 @@ html, body, #app, .ms-Fabric {
 }
 
 .comment-box {
+  position: absolute;
   $box-padding: 0 10px;
   padding-top: 10px;
   background-color: #f4f4f4;
