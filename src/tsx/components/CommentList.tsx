@@ -4,6 +4,7 @@ import {
   FocusZone, FocusZoneDirection
 } from "office-ui-fabric-react/lib/FocusZone";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
+import { IContextualMenuItem } from "office-ui-fabric-react/lib/ContextualMenu";
 import CommentsParser from "./../helpers/CommentsParser";
 import IComment from "./../model/IComment";
 
@@ -20,11 +21,18 @@ export default class CommentList extends React.Component<P> {
         <div key={i} className="comment-box">
           <h5 className="comment-author">{comment.author}</h5>
           <p className="comment-content">{comment.content}</p>
-          <ul>
+          <ul className="comment-responses">
             {!comment.responses ? [] : comment.responses.map((r, j) => (
               <li key={j}>{r.content}</li>
             ))}
           </ul>
+          <CommandBar items={[
+          {
+            key: "addResponse",
+            name: "Add response",
+            iconProps: { iconName: "CommentAdd" }
+          }
+          ]}/>
         </div>
       )} />;
   }

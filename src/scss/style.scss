@@ -69,7 +69,8 @@ html, body, #app, .ms-Fabric {
 }
 
 .comment-box {
-  padding: 10px;
+  $box-padding: 0 10px;
+  padding-top: 10px;
   background-color: #f4f4f4;
   margin-bottom: 5px;
   &:hover {
@@ -77,12 +78,20 @@ html, body, #app, .ms-Fabric {
   }
   .comment-author {
     margin: 0;
+    padding: $box-padding;
   }
   .comment-content {
     margin-bottom: 0;
     margin-top: 5px;
+    padding: $box-padding;
   }
-  ul {
-    margin: 0;
+  .comment-responses {
+    margin-bottom: 5px;
+  }
+  .ms-CommandBar {
+    background-color: unset;
+    .ms-CommandBarItem:hover {
+      background-color: #c8c8c8;
+    }
   }
 }

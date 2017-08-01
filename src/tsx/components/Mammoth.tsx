@@ -116,7 +116,8 @@ export default class Mammoth extends React.Component<P, S> {
         <CommandBar items={[
           {
             key: "add",
-            name: "Add"
+            name: "Add",
+            iconProps: { iconName: "Add" }
           }
         ]}/>
       </Callout>}
