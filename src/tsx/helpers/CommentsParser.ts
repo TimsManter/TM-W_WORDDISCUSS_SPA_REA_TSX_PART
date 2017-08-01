@@ -12,6 +12,7 @@ export default class CommentsParser {
     this._htmlDocument = html;
 
     this.extractComments(dl);
+    this.addAuthors(html.body);
     this.addChildrens(html.body);
   }
 
@@ -29,6 +30,17 @@ export default class CommentsParser {
       const ddLink = ddPara.lastChild; if (!ddLink) { continue; }
       const commentRef = ddLink.attributes["href"].value;
       this._comments.push({ id, anchorId, title, content, commentRef });
+    }
+  }
+
+  private addAuthors(html: HTMLElement) {
+    const comments = this._comments;
+    for (let c in comments) {
+      const commentId = comments[c].id;
+      const sup = html.querySelector(`sup>a[data-comment-id="${commentId}"]`);
+      if (sup) {
+        comments[c].author = sup.attributes["data-comment-author"].value;
+      }
     }
   }
 

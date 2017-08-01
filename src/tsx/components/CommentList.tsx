@@ -18,7 +18,8 @@ export default class CommentList extends React.Component<P> {
     return <FocusZone direction={FocusZoneDirection.vertical}>
       <List items={comments} onRenderCell={(comment: IComment, i) => (
         <div key={i} className="comment-box" data-is-focusable={true}>
-          <h5>{comment.content}</h5>
+          <h5>{comment.author}</h5>
+          <p>{comment.content}</p>
           <ul>
             {!comment.responses ? [] : comment.responses.map((r, j) => (
               <li key={j}>{r.content}</li>
