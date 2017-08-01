@@ -54,7 +54,7 @@ export default class Viewer extends React.Component<P, S> {
     const dlNodes = doc ? doc.querySelectorAll("dl") : null;
     if (!dlNodes) { return []; }
     const dl = dlNodes[dlNodes.length - 1];
-    const parser = new CommentsParser(dl);
+    const parser = new CommentsParser(dl, doc);
     const comments = parser.Comments;
     dlNodes[dlNodes.length - 1].remove();
     return comments;
