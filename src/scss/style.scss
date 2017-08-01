@@ -69,5 +69,20 @@ html, body, #app, .ms-Fabric {
 }
 
 .comment-box {
-  
+  padding: 10px;
+  background-color: #f4f4f4;
+  margin-bottom: 5px;
+  &:hover {
+    background-color: #eaeaea;
+  }
+  .comment-author {
+    margin: 0;
+  }
+  .comment-content {
+    margin-bottom: 0;
+    margin-top: 5px;
+  }
+  ul {
+    margin: 0;
+  }
 }
