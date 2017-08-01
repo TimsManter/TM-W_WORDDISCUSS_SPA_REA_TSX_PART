@@ -16,9 +16,8 @@ export default class CommentList extends React.Component<P> {
   renderCards(): JSX.Element {
     const { comments } = this.props;
 
-    return <FocusZone direction={FocusZoneDirection.vertical}>
-      <List items={comments} onRenderCell={(comment: IComment, i) => (
-        <div key={i} className="comment-box neutralLight" data-is-focusable={true}>
+    return <List items={comments} onRenderCell={(comment: IComment, i) => (
+        <div key={i} className="comment-box">
           <h5 className="comment-author">{comment.author}</h5>
           <p className="comment-content">{comment.content}</p>
           <ul>
@@ -27,8 +26,7 @@ export default class CommentList extends React.Component<P> {
             ))}
           </ul>
         </div>
-      )} />
-    </FocusZone>;
+      )} />;
   }
 
   onMouseOver(id) {
