@@ -116,15 +116,11 @@ export default class Viewer extends React.Component<P, S> {
         }
       ]} />
       <div id="document-wrapper">
-        <div className="ms-Grid">
-          <div className="ms-Grid-row">
-            <div className="ms-Grid-col ms-u-sm12 ms-u-md8">
-              {this.returnRenderer(currentRenderer)}
-            </div>
-            <div className="ms-Grid-col ms-u-sm12 ms-u-md4">
-              <CommentList comments={comments} />
-            </div>
-          </div>
+        <div id="preview-wrapper">
+          {this.returnRenderer(currentRenderer)}
+        </div>
+        <div id="comments-wrapper">
+          <CommentList comments={comments} />
         </div>
       </div>
     </div>;

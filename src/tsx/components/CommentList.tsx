@@ -31,14 +31,14 @@ export default class CommentList extends React.Component<P> {
           <p className="comment-content">{comment.content}</p>
           <ul className="comment-responses">
             {!comment.responses ? [] : comment.responses.map((r, j) => (
-              <li key={j}><p>{r.content}</p></li>
+            <li key={j}><p><h5>{r.author}</h5><br/>{r.content}</p></li>
             ))}
           </ul>
           <CommandBar items={[
           {
             key: "addResponse",
             name: "Add response",
-            iconProps: { iconName: "CommentAdd" }
+            iconProps: { iconName: "Add" }
           }
           ]}/>
         </div>
@@ -53,8 +53,12 @@ export default class CommentList extends React.Component<P> {
       const comment = comments[c] as HTMLDivElement;
       const id = comment.getAttribute("data-comment-id");
       const mark = html.querySelector(`mark[data-comment-id="${id}"]`);
-      const offset = String((mark as HTMLElement).offsetTop);
-      comment.style.top = mark ? offset + "px" : "0";
+      if (!mark) { continue; }
+      const offset = (mark as HTMLElement).offsetTop;
+      const commentHeight = comment.offsetHeight;
+      const commentOffset = comment.offsetTop;
+      const commentMargin = offset - commentOffset - commentHeight / 2;
+      comment.style.marginTop = commentMargin < 0 ? "0" : commentMargin + "px";
     }
   }
 

@@ -17,6 +17,8 @@ html, body, #app, .ms-Fabric {
   .ms-Grid, .ms-Grid-row, .ms-Grid-col {
     height: calc(100% - 2px);
   }
+  display: flex;
+  flex-direction: row;
 }
 
 #document-preview {
@@ -39,6 +41,14 @@ html, body, #app, .ms-Fabric {
   @extend #mammoth-preview;
   width: 100%;
   box-sizing: border-box;
+}
+
+#preview-wrapper {
+
+}
+
+#comments-wrapper {
+  flex-basis: auto;
 }
 
 .doc-title {
@@ -69,7 +79,6 @@ html, body, #app, .ms-Fabric {
 }
 
 .comment-box {
-  position: absolute;
   $box-padding: 0 10px;
   padding-top: 10px;
   background-color: #f4f4f4;
