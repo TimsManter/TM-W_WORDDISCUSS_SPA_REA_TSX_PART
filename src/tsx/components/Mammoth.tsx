@@ -42,6 +42,10 @@ export default class Mammoth extends React.Component<P, S> {
     }
   }
 
+  componentDidUpdate() {
+    this.addMarkEvents(document.body);
+  }
+
   componentWillReceiveProps(props: P) {
     const doc = props.document;
   }
@@ -51,6 +55,22 @@ export default class Mammoth extends React.Component<P, S> {
       calloutPosition: null,
       selectedText: ""
     });
+  }
+
+  addMarkEvents(html: HTMLElement) {
+    const marks = html.querySelectorAll("mark[data-comment-id]");
+    for (let m in marks) {
+      if (!(marks[m] instanceof HTMLElement)) { continue; }
+      const id = marks[m].getAttribute("data-comment-id");
+      marks[m].addEventListener("mouseover", () => {
+        const comEl = document.querySelector(`div.comment-box[data-comment-id=\"${id}\"]`);
+        if (comEl) { comEl.classList.add("active"); }
+      });
+      marks[m].addEventListener("mouseleave", () => {
+        const comEl = document.querySelector(`div.comment-box[data-comment-id=\"${id}\"]`);
+        if (comEl) { comEl.classList.remove("active"); }
+      });
+    }
   }
 
   render() {

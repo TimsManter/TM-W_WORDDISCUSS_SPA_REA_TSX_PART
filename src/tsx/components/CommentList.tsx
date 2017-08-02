@@ -26,14 +26,16 @@ export default class CommentList extends React.Component<P> {
     const { comments } = this.props;
 
     return <List items={comments} onRenderCell={(comment: IComment, i) => (
-      <div key={i} data-comment-id={comment.id} className="comment-box">
+      <div key={i} data-comment-id={comment.id} className="comment-box"
+        onMouseOver={e => this.onCommentOver(comment.id)}
+        onMouseLeave={e => this.onCommentLeave(comment.id)}>
           <h5 className="comment-author">{comment.author}</h5>
           <p className="comment-content">{comment.content}</p>
           <ul className="comment-responses">
             {!comment.responses ? [] : comment.responses.map((r, j) => (
             <li key={j}>
               <div>
-                <h5 className="comment-author">{r.author}</h5><br />
+                <h5 className="comment-author">{r.author}</h5>
                 <p className="comment-content">{r.content}</p>
               </div>
             </li>
@@ -69,11 +71,11 @@ export default class CommentList extends React.Component<P> {
     }
   }
 
-  onMouseOver(id) {
+  onCommentOver(id) {
     let mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`);
     if (mark) { mark.classList.add("active"); }
   }
-  onMouseLeave(id) {
+  onCommentLeave(id) {
     let mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`);
     if (mark) { mark.classList.remove("active"); }
   }

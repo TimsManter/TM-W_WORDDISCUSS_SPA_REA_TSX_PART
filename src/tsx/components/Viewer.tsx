@@ -116,12 +116,8 @@ export default class Viewer extends React.Component<P, S> {
         }
       ]} />
       <div id="document-wrapper">
-        <div id="preview-wrapper">
-          {this.returnRenderer(currentRenderer)}
-        </div>
-        <div id="comments-wrapper">
-          <CommentList comments={comments} />
-        </div>
+        {this.returnRenderer(currentRenderer)}
+        <CommentList comments={comments} />
       </div>
     </div>;
   }
