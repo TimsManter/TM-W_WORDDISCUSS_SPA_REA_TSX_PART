@@ -31,7 +31,12 @@ export default class CommentList extends React.Component<P> {
           <p className="comment-content">{comment.content}</p>
           <ul className="comment-responses">
             {!comment.responses ? [] : comment.responses.map((r, j) => (
-            <li key={j}><p><h5>{r.author}</h5><br/>{r.content}</p></li>
+            <li key={j}>
+              <div>
+                <h5 className="comment-author">{r.author}</h5><br />
+                <p className="comment-content">{r.content}</p>
+              </div>
+            </li>
             ))}
           </ul>
           <CommandBar items={[
@@ -57,8 +62,10 @@ export default class CommentList extends React.Component<P> {
       const offset = (mark as HTMLElement).offsetTop;
       const commentHeight = comment.offsetHeight;
       const commentOffset = comment.offsetTop;
-      const commentMargin = offset - commentOffset - commentHeight / 2;
-      comment.style.marginTop = commentMargin < 0 ? "0" : commentMargin + "px";
+      const commentMargin = Number((comment.style.marginTop || "0px").slice(0, -2));
+      const commentDiff = offset - commentOffset - commentHeight / 2;
+      const commentNewMargin = commentMargin + commentDiff;
+      comment.style.marginTop = commentNewMargin < 0 ? "0px" : commentNewMargin + "px";
     }
   }
 
