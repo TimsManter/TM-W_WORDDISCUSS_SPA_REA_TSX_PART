@@ -44,7 +44,6 @@ export default class Mammoth extends React.Component<P, S> {
 
   componentWillReceiveProps(props: P) {
     const doc = props.document;
-    //this.markComments(doc);
   }
 
   onCalloutDismiss(event) {

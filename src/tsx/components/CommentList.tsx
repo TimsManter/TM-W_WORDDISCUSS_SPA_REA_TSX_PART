@@ -15,8 +15,9 @@ export interface P {
 export default class CommentList extends React.Component<P> {
 
   componentDidMount() {
-    document.addEventListener("resize", this.setCommentsOffset);
+    window.addEventListener("resize", this.setCommentsOffset);
   }
+
   componentDidUpdate() {
     this.setCommentsOffset();
   }
