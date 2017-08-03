@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Callout } from "office-ui-fabric-react/lib/Callout";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
+import { Label } from "office-ui-fabric-react/lib/Label";
 
 export interface P {
   document: Document | null;
@@ -88,7 +89,10 @@ export default class Mammoth extends React.Component<P, S> {
         <div className="callout-content">
           <h2 className="ms-font-xl">Add comment</h2>
           <p>"{selectedText}"</p>
-          <textarea></textarea>
+          <Label required={true}>Comment</Label>
+          <textarea id="callout-comment"></textarea>
+          <Label>Suggested change</Label>
+          <textarea placeholder="(optional)" id="callout-suggestion"></textarea>
         </div>
         <CommandBar items={[
           {
