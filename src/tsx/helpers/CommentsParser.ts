@@ -13,7 +13,7 @@ export default class CommentsParser {
 
     this.extractComments(dl);
     this.addAuthors(html.body);
-    this.addChildrens(html.body);
+    this.addChildren(html.body);
     this.markComments(html.body);
   }
 
@@ -66,7 +66,7 @@ export default class CommentsParser {
     }
   }
 
-  private addChildrens(html: HTMLElement) {
+  private addChildren(html: HTMLElement) {
     const comments = this._comments;
     const commentStarts = html.querySelectorAll("span[data-comment-edge=\"start\"]");
     for (let s = 0; s < commentStarts.length; s++) {
