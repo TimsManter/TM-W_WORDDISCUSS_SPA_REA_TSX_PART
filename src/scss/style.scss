@@ -8,6 +8,11 @@ html, body, #app, .ms-Fabric {
   @extend #app;
   display: flex;
   flex-direction: column;
+  & > .ms-MessageBar {
+    height: 40px;
+    position: absolute;
+    z-index: 1;
+  }
 }
 
 #document-wrapper {

@@ -2,6 +2,10 @@ import * as React from "react";
 import { Fabric } from "office-ui-fabric-react/lib/Fabric";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
 import { IContextualMenuItem } from "office-ui-fabric-react/lib/ContextualMenu";
+import {
+  MessageBar, MessageBarType
+} from "office-ui-fabric-react/lib/MessageBar";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import * as MammothJS from "mammoth";
 const doc = require("base64-loader!./demo.docx");
 
@@ -16,6 +20,8 @@ interface S {
   currentRenderer: string;
   document: Document | null;
   comments: IComments[];
+  promptMessage: boolean;
+  statusMessage: boolean;
 }
 
 export default class Viewer extends React.Component<P, S> {
@@ -24,7 +30,9 @@ export default class Viewer extends React.Component<P, S> {
     this.state = {
       currentRenderer: "mammoth",
       document: null,
-      comments: []
+      comments: [],
+      promptMessage: false,
+      statusMessage: false
     };
     this.renderDocToHtml();
   }
@@ -90,9 +98,32 @@ export default class Viewer extends React.Component<P, S> {
   }
 
   render() {
-    const { currentRenderer, comments } = this.state;
+    const {
+      currentRenderer,
+      comments,
+      promptMessage,
+      statusMessage
+    } = this.state;
 
     return <div id="viewer-wrapper">
+      {promptMessage && <MessageBar
+        actions={
+          <div>
+            <DefaultButton>Yes</DefaultButton>
+            <DefaultButton>No</DefaultButton>
+          </div>
+        }
+        messageBarType={MessageBarType.success}
+        isMultiline={false}>
+        Success
+      </MessageBar>}
+      {statusMessage && <MessageBar
+        messageBarType={MessageBarType.success}
+        isMultiline={false}
+        onDismiss={() => { console.log("Message closed"); }}>
+        Success
+      </MessageBar>}
+      
       <CommandBar items={[
         {
           key: "renderer",
