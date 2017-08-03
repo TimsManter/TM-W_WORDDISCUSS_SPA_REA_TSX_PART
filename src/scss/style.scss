@@ -111,7 +111,8 @@ html, body, #app, .ms-Fabric {
     margin: 0;
     padding: $box-padding;
   }
-  .comment-responses {
+  ul.comment-responses {
+    padding-left: 30px;
     margin-bottom: 5px;
     li {
       margin-bottom: 5px;
