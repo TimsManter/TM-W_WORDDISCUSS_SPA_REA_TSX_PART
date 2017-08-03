@@ -27,7 +27,6 @@ export default class Mammoth extends React.Component<P, S> {
         let selection = document.getSelection();
         let selectionText = selection.toString();
         if (selectionText !== "") {
-          console.log(selectionText);
           this.setState({
             selectedText: selectionText,
             calloutPosition: event
