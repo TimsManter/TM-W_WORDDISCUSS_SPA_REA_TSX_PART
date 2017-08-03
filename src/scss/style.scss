@@ -31,12 +31,22 @@ html, body, #app, .ms-Fabric {
   flex-basis: 70%;
   mark {
     background-color: #eaeaea;
+    border-width: 1px;
+    border-style: dashed;
+    border-color: transparent;
     &.active {
-      background-color: yellow;
+      border-color: red;
     }
   }
   :first-child {
     margin-top: 0;
+  }
+  span[data-change-type="del"] {
+    text-decoration: line-through;
+    background-color: lightpink;
+  }
+  span[data-change-type="ins"] {
+    background-color: lightgreen;
   }
 }
 
