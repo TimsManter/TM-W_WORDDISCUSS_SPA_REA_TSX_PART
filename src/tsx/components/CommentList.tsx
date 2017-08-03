@@ -72,12 +72,24 @@ export default class CommentList extends React.Component<P> {
   }
 
   onCommentOver(id) {
-    let mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`);
-    if (mark) { mark.classList.add("active"); }
+    const mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`);
+    if (!mark) { return; }
+    mark.classList.add("active");
+    const markChildren = mark.querySelectorAll("mark[data-comment-id]");
+    for (let m in markChildren) {
+      if (!(markChildren[m] instanceof HTMLElement)) { continue; }
+      markChildren[m].classList.add("active");
+    }
   }
   onCommentLeave(id) {
-    let mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`);
-    if (mark) { mark.classList.remove("active"); }
+    const mark = document.querySelector(`mark[data-comment-id=\"${id}\"]`);
+    if (!mark) { return; }
+    mark.classList.remove("active");
+    const markChildren = mark.querySelectorAll("mark[data-comment-id]");
+    for (let m in markChildren) {
+      if (!(markChildren[m] instanceof HTMLElement)) { continue; }
+      markChildren[m].classList.remove("active");
+    }
   }
 
   render() {
