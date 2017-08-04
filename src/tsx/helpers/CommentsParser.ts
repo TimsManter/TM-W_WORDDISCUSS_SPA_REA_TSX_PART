@@ -28,9 +28,7 @@ export default class CommentsParser {
       const ddPara = dd.firstChild; if (!ddPara) { continue; }
       const ddText = ddPara.firstChild; if (!ddText) { continue; }
       const content = ddText.textContent ? ddText.textContent.trim() : "";
-      const ddLink = ddPara.lastChild; if (!ddLink) { continue; }
-      const commentRef = ddLink.attributes["href"].value;
-      this._comments.push({ id, anchorId, title, content, commentRef });
+      this._comments.push({ id, title, content });
     }
   }
 
