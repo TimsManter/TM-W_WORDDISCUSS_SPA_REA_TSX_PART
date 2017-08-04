@@ -61,11 +61,13 @@ export default class CommentList extends React.Component<P> {
       const id = comment.getAttribute("data-comment-id");
       const mark = html.querySelector(`mark[data-comment-id="${id}"]`);
       if (!mark) { continue; }
-      const offset = (mark as HTMLElement).offsetTop;
+      const markOffset = (mark as HTMLElement).offsetTop;
+      const markHeight = (mark as HTMLElement).offsetHeight;
+      const markMiddle = markOffset + markHeight / 2;
       const commentHeight = comment.offsetHeight;
       const commentOffset = comment.offsetTop;
       const commentMargin = Number((comment.style.marginTop || "0px").slice(0, -2));
-      const commentDiff = offset - commentOffset - commentHeight / 2;
+      const commentDiff = markMiddle - commentOffset - commentHeight / 2;
       const commentNewMargin = commentMargin + commentDiff;
       comment.style.marginTop = commentNewMargin < 0 ? "0px" : commentNewMargin + "px";
     }
