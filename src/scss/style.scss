@@ -85,6 +85,17 @@ html, body, #app, .ms-Fabric {
         width: 100%;
         box-sizing: border-box;
       }
+      div.toggle-group {
+        display: flex;
+        flex-direction: row;
+        .toggle-switch {
+
+        }
+      }
+    }
+    .ms-MessageBar {
+      position: absolute;
+      bottom: 0;
     }
   }
 }

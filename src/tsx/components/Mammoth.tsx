@@ -2,6 +2,11 @@ import * as React from "react";
 import { Callout } from "office-ui-fabric-react/lib/Callout";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
 import { Label } from "office-ui-fabric-react/lib/Label";
+import {
+  MessageBar, MessageBarType
+} from "office-ui-fabric-react/lib/MessageBar";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { Toggle } from "office-ui-fabric-react/lib/Toggle";
 
 export interface P {
   document: Document | null;
@@ -9,6 +14,7 @@ export interface P {
 interface S {
   calloutPosition: MouseEvent | null;
   selectedText: string;
+  promptMessage: boolean;
 }
 
 export default class Mammoth extends React.Component<P, S> {
@@ -17,7 +23,8 @@ export default class Mammoth extends React.Component<P, S> {
     this.onCalloutDismiss = this.onCalloutDismiss.bind(this);
     this.state = {
       calloutPosition: null,
-      selectedText: ""
+      selectedText: "",
+      promptMessage: false
     };
   }
 
@@ -74,7 +81,7 @@ export default class Mammoth extends React.Component<P, S> {
   }
 
   render() {
-    const { calloutPosition, selectedText } = this.state;
+    const { calloutPosition, selectedText, promptMessage } = this.state;
     const { document } = this.props;
     const docContent = document ? document.body.innerHTML : null;
 
@@ -89,6 +96,18 @@ export default class Mammoth extends React.Component<P, S> {
         <div className="callout-content">
           <h2 className="ms-font-xl">Add comment</h2>
           <p>"{selectedText}"</p>
+          <div className="toggle-group">
+            <Toggle
+              defaultChecked={ false }
+              label="Comment"
+              onText="On"
+              offText="Off" />
+            <Toggle
+              defaultChecked={ false }
+              label="Change suggestion"
+              onText="On"
+              offText="Off" />
+          </div>
           <Label required={true}>Comment</Label>
           <textarea id="callout-comment"></textarea>
           <Label>Suggested change</Label>
@@ -98,9 +117,21 @@ export default class Mammoth extends React.Component<P, S> {
           {
             key: "add",
             name: "Add",
-            iconProps: { iconName: "Add" }
+            iconProps: { iconName: "Add" },
+            onClick: e => { this.setState({ promptMessage: true });}
           }
-        ]}/>
+        ]} />
+        {promptMessage && <MessageBar
+        actions={
+          <div>
+            <DefaultButton>Yes</DefaultButton>
+            <DefaultButton>No</DefaultButton>
+          </div>
+        }
+        messageBarType={MessageBarType.success}
+        isMultiline={false}>
+        Success
+      </MessageBar>}
       </Callout>}
     </div>;
   }
