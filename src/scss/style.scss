@@ -88,8 +88,8 @@ html, body, #app, .ms-Fabric {
       div.toggle-group {
         display: flex;
         flex-direction: row;
-        .toggle-switch {
-
+        .ms-Toggle {
+          flex-basis: 50%;
         }
       }
     }
