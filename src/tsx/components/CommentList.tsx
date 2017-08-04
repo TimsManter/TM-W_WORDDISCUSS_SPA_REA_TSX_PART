@@ -12,7 +12,18 @@ export interface P {
   comments: IComment[];
 }
 
-export default class CommentList extends React.Component<P> {
+export interface S {
+  newResponseId: number | null;
+}
+
+export default class CommentList extends React.Component<P, S> {
+
+  constructor(props: P) {
+    super(props);
+    this.state = {
+      newResponseId: null
+    };
+  }
 
   componentDidMount() {
     window.addEventListener("resize", this.setCommentsOffset);
@@ -24,6 +35,7 @@ export default class CommentList extends React.Component<P> {
 
   renderCards(): JSX.Element {
     const { comments } = this.props;
+    const { newResponseId } = this.state;
 
     return <List items={comments} onRenderCell={(comment: IComment, i) => (
       <div key={i} data-comment-id={comment.id} className="comment-box"
@@ -41,13 +53,25 @@ export default class CommentList extends React.Component<P> {
             </li>
             ))}
           </ul>
-          <CommandBar items={[
+          {newResponseId === comment.id ? <CommandBar items={[
+          {
+            key: "acceptResponse",
+            name: "Add",
+            iconProps: { iconName: "Add" },
+            onClick: () => this.onCommentAnswer()
+          },
+          {
+            key: "cancelResponse",
+            name: "cancel",
+            iconProps: { iconName: "Cancel" },
+            onClick: () => this.onCommentAnswer(true)
+          }]} /> : <CommandBar items={[
           {
             key: "addResponse",
             name: "Add response",
-            iconProps: { iconName: "Add" }
-          }
-          ]}/>
+            iconProps: { iconName: "Add" },
+            onClick: () => this.addAnswerPrototype(comment.id)
+          }]}/>}
         </div>
       )} />;
   }
@@ -92,6 +116,42 @@ export default class CommentList extends React.Component<P> {
       if (!(markChildren[m] instanceof HTMLElement)) { continue; }
       markChildren[m].classList.remove("active");
     }
+  }
+
+  addAnswerPrototype(id: number) {
+    const com = document.querySelector(`.comment-box[data-comment-id="${id}"]`);
+    if (!com) { return; }
+    const responses = com.querySelector("ul.comment-responses");
+    if (!responses) { return; }
+    const prototype = document.createElement("li");
+    const input = document.createElement("input");
+    input.setAttribute("type", "text");
+    prototype.appendChild(input);
+    (responses as HTMLUListElement).appendChild(prototype);
+    this.setState({ newResponseId: id });
+  }
+
+  onCommentAnswer(cancel: boolean = false) {
+    if (!cancel && this.state.newResponseId) {
+      const li = document.querySelector(`.comment-box[data-comment-id="${this.state.newResponseId}"] ul.comment-responses:last-child`);
+      if (li) {
+        const input = (li as HTMLLIElement).querySelector("input");
+        if (input) {
+          (li as HTMLLIElement).remove();
+          const newAnswer = document.createElement("div");
+          const newAuthor = document.createElement("h5");
+          newAuthor.appendChild(document.createTextNode("Anonymous"));
+          const newPara = document.createElement("p");
+          const text = input.value.trim();
+          if (text === "") { return; }
+          newPara.appendChild(document.createTextNode(text));
+          newAnswer.appendChild(newAuthor);
+          newAnswer.appendChild(newPara);
+          li.appendChild(newAnswer);
+        }
+      }
+    }
+    this.setState({ newResponseId: null });
   }
 
   render() {
