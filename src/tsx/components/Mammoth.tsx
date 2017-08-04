@@ -14,7 +14,7 @@ export interface P {
 interface S {
   calloutPosition: MouseEvent | null;
   selectedText: string;
-  promptMessage: boolean;
+  addEmptyMessage: boolean;
   calloutComment: boolean;
   calloutSuggestion: boolean;
 }
@@ -26,7 +26,7 @@ export default class Mammoth extends React.Component<P, S> {
     this.state = {
       calloutPosition: null,
       selectedText: "",
-      promptMessage: false,
+      addEmptyMessage: false,
       calloutComment: false,
       calloutSuggestion: false
     };
@@ -64,7 +64,10 @@ export default class Mammoth extends React.Component<P, S> {
   onCalloutDismiss(event) {
     this.setState({
       calloutPosition: null,
-      selectedText: ""
+      selectedText: "",
+      calloutComment: false,
+      calloutSuggestion: false,
+      addEmptyMessage: false
     });
   }
 
@@ -84,11 +87,23 @@ export default class Mammoth extends React.Component<P, S> {
     }
   }
 
+  checkEmpty(): boolean {
+    const commentTextareas = document.querySelectorAll(".callout-content textarea");
+    if (commentTextareas.length === 0) { return true; }
+    for (let t in commentTextareas) {
+      if (!(commentTextareas[t] instanceof HTMLTextAreaElement)) { continue; }
+      if ((commentTextareas[t] as HTMLTextAreaElement).value.trim() === "") {
+        return true;
+      }
+    }
+    return false;
+  }
+
   render() {
     const {
       calloutPosition,
       selectedText,
-      promptMessage,
+      addEmptyMessage,
       calloutComment,
       calloutSuggestion
     } = this.state;
@@ -134,19 +149,18 @@ export default class Mammoth extends React.Component<P, S> {
             key: "add",
             name: "Add",
             iconProps: { iconName: "Add" },
-            onClick: e => { this.setState({ promptMessage: true });}
+            onClick: e => {
+              if (this.checkEmpty()) {
+                this.setState({ addEmptyMessage: true });
+              }
+            }
           }
         ]} />
-        {promptMessage && <MessageBar
-        actions={
-          <div>
-            <DefaultButton>Yes</DefaultButton>
-            <DefaultButton>No</DefaultButton>
-          </div>
-        }
-        messageBarType={MessageBarType.success}
-        isMultiline={false}>
-        Success
+        {addEmptyMessage && <MessageBar
+        messageBarType={MessageBarType.error}
+        isMultiline={false}
+        onDismiss={e => { this.setState({ addEmptyMessage: false }); }}>
+        Fill at least one field
       </MessageBar>}
       </Callout>}
     </div>;

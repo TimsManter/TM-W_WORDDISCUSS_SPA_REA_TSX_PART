@@ -73,6 +73,7 @@ html, body, #app, .ms-Fabric {
 .ms-Callout-container {
   .ms-Callout-main {
     max-width: 500px;
+    min-width: 300px;
     .callout-content {
       padding: 0 10px;
       p {
@@ -96,6 +97,7 @@ html, body, #app, .ms-Fabric {
     .ms-MessageBar {
       position: absolute;
       bottom: 0;
+      height: 40px;
     }
   }
 }
