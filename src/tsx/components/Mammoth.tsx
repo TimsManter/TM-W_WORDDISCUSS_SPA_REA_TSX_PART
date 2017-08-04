@@ -15,6 +15,8 @@ interface S {
   calloutPosition: MouseEvent | null;
   selectedText: string;
   promptMessage: boolean;
+  calloutComment: boolean;
+  calloutSuggestion: boolean;
 }
 
 export default class Mammoth extends React.Component<P, S> {
@@ -24,7 +26,9 @@ export default class Mammoth extends React.Component<P, S> {
     this.state = {
       calloutPosition: null,
       selectedText: "",
-      promptMessage: false
+      promptMessage: false,
+      calloutComment: false,
+      calloutSuggestion: false
     };
   }
 
@@ -81,7 +85,13 @@ export default class Mammoth extends React.Component<P, S> {
   }
 
   render() {
-    const { calloutPosition, selectedText, promptMessage } = this.state;
+    const {
+      calloutPosition,
+      selectedText,
+      promptMessage,
+      calloutComment,
+      calloutSuggestion
+    } = this.state;
     const { document } = this.props;
     const docContent = document ? document.body.innerHTML : null;
 
@@ -98,20 +108,26 @@ export default class Mammoth extends React.Component<P, S> {
           <p>"{selectedText}"</p>
           <div className="toggle-group">
             <Toggle
-              defaultChecked={ false }
+              defaultChecked={false}
+              onChanged={c => this.setState({calloutComment: c})}
               label="Comment"
               onText="On"
               offText="Off" />
             <Toggle
-              defaultChecked={ false }
+              defaultChecked={false}
+              onChanged={c => this.setState({calloutSuggestion: c})}
               label="Change suggestion"
               onText="On"
               offText="Off" />
           </div>
-          <Label required={true}>Comment</Label>
-          <textarea id="callout-comment"></textarea>
-          <Label>Suggested change</Label>
-          <textarea placeholder="(optional)" id="callout-suggestion"></textarea>
+          {calloutComment && <div>
+            <Label>Comment</Label>
+            <textarea placeholder="Your comment about the text above" id="callout-comment"></textarea>
+          </div>}
+          {calloutSuggestion && <div>
+            <Label>Suggested change</Label>
+            <textarea placeholder="Your new proposition about the text above" id="callout-suggestion"></textarea>
+          </div>}
         </div>
         <CommandBar items={[
           {
