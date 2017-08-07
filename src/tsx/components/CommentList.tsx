@@ -5,6 +5,9 @@ import {
 } from "office-ui-fabric-react/lib/FocusZone";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
 import { IContextualMenuItem } from "office-ui-fabric-react/lib/ContextualMenu";
+import {
+  MessageBar, MessageBarType
+} from "office-ui-fabric-react/lib/MessageBar";
 import CommentsParser from "./../helpers/CommentsParser";
 import IComment from "./../model/IComment";
 
@@ -14,6 +17,7 @@ export interface P {
 
 export interface S {
   newResponseId: number | null;
+  addEmptyMessage: number | null;
 }
 
 export default class CommentList extends React.Component<P, S> {
@@ -21,7 +25,8 @@ export default class CommentList extends React.Component<P, S> {
   constructor(props: P) {
     super(props);
     this.state = {
-      newResponseId: null
+      newResponseId: null,
+      addEmptyMessage: null
     };
   }
 
@@ -35,7 +40,7 @@ export default class CommentList extends React.Component<P, S> {
 
   renderCards(): JSX.Element {
     const { comments } = this.props;
-    const { newResponseId } = this.state;
+    const { newResponseId, addEmptyMessage } = this.state;
 
     return <List items={comments} onRenderCell={(comment: IComment, i) => (
       <div key={i} data-comment-id={comment.id} className="comment-box"
@@ -58,20 +63,29 @@ export default class CommentList extends React.Component<P, S> {
             key: "acceptResponse",
             name: "Add",
             iconProps: { iconName: "Add" },
-            onClick: () => this.onCommentAnswer()
+            onClick: () => this.onCommentAnswer(comment.id)
           },
           {
             key: "cancelResponse",
             name: "Cancel",
             iconProps: { iconName: "Cancel" },
-            onClick: () => this.onCommentAnswer(true)
+            onClick: () => this.onCommentAnswer(comment.id, true)
           }] : [
           {
             key: "addResponse",
             name: "Add response",
             iconProps: { iconName: "Add" },
             onClick: () => this.addAnswerPrototype(comment.id)
-          }]}/>
+              }]} />
+          {addEmptyMessage === comment.id && <MessageBar
+            messageBarType={MessageBarType.error}
+            isMultiline={false}
+            onDismiss={e => {
+              this.setState({ addEmptyMessage: null });
+              window.dispatchEvent(new Event("resize"));
+            }}>
+            Field can't be empty
+          </MessageBar>}
         </div>
       )} />;
   }
@@ -88,11 +102,12 @@ export default class CommentList extends React.Component<P, S> {
       const markOffset = (mark as HTMLElement).offsetTop;
       const markHeight = (mark as HTMLElement).offsetHeight;
       const markMiddle = markOffset + markHeight / 2;
-      const commentHeight = comment.offsetHeight;
+      let commentHeight = comment.offsetHeight;
+      if (this.state.addEmptyMessage === id) { commentHeight -= 40; }
       const commentOffset = comment.offsetTop;
       const commentMargin = Number((comment.style.marginTop || "0px").slice(0, -2));
       const commentDiff = markMiddle - commentOffset - commentHeight / 2;
-      const commentNewMargin = Math.floor(commentMargin + commentDiff);
+      let commentNewMargin = Math.floor(commentMargin + commentDiff);
       comment.style.marginTop = commentNewMargin < 0 ? "0px" : commentNewMargin + "px";
     }
   }
@@ -132,7 +147,7 @@ export default class CommentList extends React.Component<P, S> {
     window.dispatchEvent(new Event("resize"));
   }
 
-  onCommentAnswer(cancel: boolean = false) {
+  onCommentAnswer(id: number, cancel: boolean = false) {
     if (this.state.newResponseId) {
       const ul = document.querySelector(`.comment-box[data-comment-id="${this.state.newResponseId}"] ul.comment-responses`);
       if (!ul) { return; }
@@ -140,7 +155,9 @@ export default class CommentList extends React.Component<P, S> {
       if (li) {
         const input = (li as HTMLLIElement).querySelector("input");
         if (input) {
-          if (cancel) { (li as HTMLLIElement).remove(); }
+          if (cancel) {
+            (li as HTMLLIElement).remove();
+          }
           else {
             const newAnswer = document.createElement("div");
             const newAuthor = document.createElement("h5");
@@ -149,13 +166,18 @@ export default class CommentList extends React.Component<P, S> {
             const newPara = document.createElement("p");
             newPara.classList.add("comment-content");
             const text = input.value.trim();
-            if (text === "") { return; }
+            if (text === "") {
+              this.setState({ addEmptyMessage: id });
+              window.dispatchEvent(new Event("resize"));
+              return;
+            }
             (input as HTMLInputElement).remove();
             newPara.appendChild(document.createTextNode(text));
             newAnswer.appendChild(newAuthor);
             newAnswer.appendChild(newPara);
             li.appendChild(newAnswer);
           }
+          this.setState({ addEmptyMessage: null });
         }
       }
     }
