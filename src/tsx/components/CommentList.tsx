@@ -92,7 +92,7 @@ export default class CommentList extends React.Component<P, S> {
       const commentOffset = comment.offsetTop;
       const commentMargin = Number((comment.style.marginTop || "0px").slice(0, -2));
       const commentDiff = markMiddle - commentOffset - commentHeight / 2;
-      const commentNewMargin = commentMargin + commentDiff;
+      const commentNewMargin = Math.floor(commentMargin + commentDiff);
       comment.style.marginTop = commentNewMargin < 0 ? "0px" : commentNewMargin + "px";
     }
   }
