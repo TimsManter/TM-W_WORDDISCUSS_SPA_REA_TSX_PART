@@ -53,7 +53,7 @@ export default class CommentList extends React.Component<P, S> {
             </li>
             ))}
           </ul>
-          {newResponseId === comment.id ? <CommandBar items={[
+          <CommandBar items={newResponseId === comment.id ? [
           {
             key: "acceptResponse",
             name: "Add",
@@ -65,13 +65,13 @@ export default class CommentList extends React.Component<P, S> {
             name: "Cancel",
             iconProps: { iconName: "Cancel" },
             onClick: () => this.onCommentAnswer(true)
-          }]} /> : <CommandBar items={[
+          }] : [
           {
             key: "addResponse",
             name: "Add response",
             iconProps: { iconName: "Add" },
             onClick: () => this.addAnswerPrototype(comment.id)
-          }]}/>}
+          }]}/>
         </div>
       )} />;
   }
@@ -129,6 +129,7 @@ export default class CommentList extends React.Component<P, S> {
     prototype.appendChild(input);
     (responses as HTMLUListElement).appendChild(prototype);
     this.setState({ newResponseId: id });
+    window.dispatchEvent(new Event("resize"));
   }
 
   onCommentAnswer(cancel: boolean = false) {
