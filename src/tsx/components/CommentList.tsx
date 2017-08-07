@@ -62,7 +62,7 @@ export default class CommentList extends React.Component<P, S> {
           },
           {
             key: "cancelResponse",
-            name: "cancel",
+            name: "Cancel",
             iconProps: { iconName: "Cancel" },
             onClick: () => this.onCommentAnswer(true)
           }]} /> : <CommandBar items={[
