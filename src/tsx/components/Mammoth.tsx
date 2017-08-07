@@ -155,7 +155,11 @@ export default class Mammoth extends React.Component<P, S> {
                 this.setState({ addEmptyMessage: true });
               } else {
                 displayMessageBar();
-                this.setState({ calloutPosition: null });
+                this.setState({
+                  calloutPosition: null,
+                  calloutComment: false,
+                  calloutSuggestion: false
+                });
               }
             }
           }

@@ -102,8 +102,7 @@ export default class CommentList extends React.Component<P, S> {
       const markOffset = (mark as HTMLElement).offsetTop;
       const markHeight = (mark as HTMLElement).offsetHeight;
       const markMiddle = markOffset + markHeight / 2;
-      let commentHeight = comment.offsetHeight;
-      if (this.state.addEmptyMessage === id) { commentHeight -= 40; }
+      const commentHeight = comment.offsetHeight;
       const commentOffset = comment.offsetTop;
       const commentMargin = Number((comment.style.marginTop || "0px").slice(0, -2));
       const commentDiff = markMiddle - commentOffset - commentHeight / 2;

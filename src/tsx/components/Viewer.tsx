@@ -127,8 +127,14 @@ export default class Viewer extends React.Component<P, S> {
       {statusMessage && <MessageBar
         messageBarType={MessageBarType.success}
         isMultiline={false}
-        onDismiss={() => { this.setState({ statusMessage: false }); }}>
-        Change added!
+        onDismiss={() => { this.setState({ statusMessage: false }); }}
+        actions={
+          <div>
+            <DefaultButton>Yes</DefaultButton>
+            <DefaultButton>No</DefaultButton>
+          </div>
+        }>
+        Change added! Send changes now?
       </MessageBar>}
       
       <CommandBar items={[
