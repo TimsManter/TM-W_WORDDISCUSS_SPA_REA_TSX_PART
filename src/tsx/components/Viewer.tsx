@@ -27,6 +27,7 @@ interface S {
 export default class Viewer extends React.Component<P, S> {
   constructor(props: P) {
     super();
+    this.displayMessageBar = this.displayMessageBar.bind(this);
     this.state = {
       currentRenderer: "mammoth",
       document: null,
@@ -80,7 +81,9 @@ export default class Viewer extends React.Component<P, S> {
         return <GViewRender
           url="https://calibre-ebook.com/downloads/demos/demo.docx" />;
       case "mammoth":
-        return <Mammoth document={this.state.document} />;
+        return <Mammoth
+          document={this.state.document}
+          displayMessageBar={this.displayMessageBar} />;
       default:
         return null;
     }
@@ -95,6 +98,10 @@ export default class Viewer extends React.Component<P, S> {
       default:
         return "";
     }
+  }
+
+  displayMessageBar() {
+    this.setState({ statusMessage: true });
   }
 
   render() {
@@ -120,8 +127,8 @@ export default class Viewer extends React.Component<P, S> {
       {statusMessage && <MessageBar
         messageBarType={MessageBarType.success}
         isMultiline={false}
-        onDismiss={() => { console.log("Message closed"); }}>
-        Success
+        onDismiss={() => { this.setState({ statusMessage: false }); }}>
+        Change added!
       </MessageBar>}
       
       <CommandBar items={[

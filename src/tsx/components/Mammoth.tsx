@@ -10,6 +10,7 @@ import { Toggle } from "office-ui-fabric-react/lib/Toggle";
 
 export interface P {
   document: Document | null;
+  displayMessageBar: () => void;
 }
 interface S {
   calloutPosition: MouseEvent | null;
@@ -107,7 +108,7 @@ export default class Mammoth extends React.Component<P, S> {
       calloutComment,
       calloutSuggestion
     } = this.state;
-    const { document } = this.props;
+    const { document, displayMessageBar } = this.props;
     const docContent = document ? document.body.innerHTML : null;
 
     return <div>
@@ -152,6 +153,9 @@ export default class Mammoth extends React.Component<P, S> {
             onClick: e => {
               if (this.checkEmpty()) {
                 this.setState({ addEmptyMessage: true });
+              } else {
+                displayMessageBar();
+                this.setState({ calloutPosition: null });
               }
             }
           }
