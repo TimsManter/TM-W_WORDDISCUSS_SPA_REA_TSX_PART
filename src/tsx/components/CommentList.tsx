@@ -133,26 +133,34 @@ export default class CommentList extends React.Component<P, S> {
   }
 
   onCommentAnswer(cancel: boolean = false) {
-    if (!cancel && this.state.newResponseId) {
-      const li = document.querySelector(`.comment-box[data-comment-id="${this.state.newResponseId}"] ul.comment-responses:last-child`);
+    if (this.state.newResponseId) {
+      const ul = document.querySelector(`.comment-box[data-comment-id="${this.state.newResponseId}"] ul.comment-responses`);
+      if (!ul) { return; }
+      const li = ul.lastElementChild;
       if (li) {
         const input = (li as HTMLLIElement).querySelector("input");
         if (input) {
-          (li as HTMLLIElement).remove();
-          const newAnswer = document.createElement("div");
-          const newAuthor = document.createElement("h5");
-          newAuthor.appendChild(document.createTextNode("Anonymous"));
-          const newPara = document.createElement("p");
-          const text = input.value.trim();
-          if (text === "") { return; }
-          newPara.appendChild(document.createTextNode(text));
-          newAnswer.appendChild(newAuthor);
-          newAnswer.appendChild(newPara);
-          li.appendChild(newAnswer);
+          if (cancel) { (li as HTMLLIElement).remove(); }
+          else {
+            const newAnswer = document.createElement("div");
+            const newAuthor = document.createElement("h5");
+            newAuthor.classList.add("comment-author");
+            newAuthor.appendChild(document.createTextNode("Anonymous"));
+            const newPara = document.createElement("p");
+            newPara.classList.add("comment-content");
+            const text = input.value.trim();
+            if (text === "") { return; }
+            (input as HTMLInputElement).remove();
+            newPara.appendChild(document.createTextNode(text));
+            newAnswer.appendChild(newAuthor);
+            newAnswer.appendChild(newPara);
+            li.appendChild(newAnswer);
+          }
         }
       }
     }
     this.setState({ newResponseId: null });
+    window.dispatchEvent(new Event("resize"));
   }
 
   render() {
