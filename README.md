@@ -1,3 +1,7 @@
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Repo moved here 👉 https://github.com/SelfRef/word-discuss
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 # React DOCX document viewer
 
 * @Author: TimsManter
